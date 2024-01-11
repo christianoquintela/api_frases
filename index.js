@@ -32,19 +32,19 @@ app.post('/cadastro', (req) => {
 /* **************** Fim Posts ******** */
 
 /* **************** Getters ******** */
-app.get('/:id', (req, res) => {
-    const id = req.params.id;
-    // console.log('ID: ' + id);
-    const sql = 'select * from frases where id_frase = ?';
-    const values = [id];
+app.get('/', (req, res) => {
+    //Get com query randômico
+    const sql =
+        'SELECT id_frase, titulo_frase, frase, autor FROM frases WHERE id_frase >= (SELECT FLOOR(MAX(id_frase) * RAND()) FROM frases) ORDER BY id_frase LIMIT 1';
+
     //Query com o uso de strings
-    con.query(sql, values, (err, rows, fields) => {
+    con.query(sql, (err, rows) => {
         // console.log(rows);
         const [dados] = rows;
         // const json = JSON.stringify(dados);
         res.json(dados);
     });
-    
+
     // res.json({ id: fR[0].id_frase, title: fR[0].titulo, frase: fR[0].frase, autor: fR[0].autor });
 });
 /* **************** Fim Getters ******** */
