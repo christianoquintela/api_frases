@@ -5,6 +5,7 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
+        "start": "nodemon index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Christiano Quintela",
@@ -13,5 +14,9 @@
         "cors": "^2.8.5",
         "express": "^4.18.2",
         "mysql2": "^3.7.0"
+    },
+    "devDependencies": {
+        "dotenv": "^16.3.1",
+        "nodemon": "^3.0.2"
     }
 }

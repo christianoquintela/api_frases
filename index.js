@@ -1,24 +1,22 @@
 //Libs
-import bodyParser from 'body-parser';
 import express from 'express';
-import cors from 'cors';
-
+import dotenv from 'dotenv';
+dotenv.config();
 //Acesso ao bando de dados
 import Post from './handlers/insert/post.js';
 // import Getter from './handlers/search/getter.js';
 import con from './db_con/db.js';
-//Listen na porta 8080
-const port = 8080;
+/* ****************************************************************************************************************** */
 //utilizando o express como ensinado na devmedia.
 const app = express();
 
-/* **************** Usos do express ******** */
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-/* **************** FIM Usos do express **** */
+/* **************** Usos do express ********************************************************************************* */
+app.use(express.json());
+// app.use(cors());
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
-/* **************** Posts ******** */
+/* **************** Posts ******************************************************************************************* */
 app.post('/cadastro', (req) => {
     const { titulo, frase, autor } = req.body;
     // //strings de dados
@@ -31,7 +29,7 @@ app.post('/cadastro', (req) => {
 });
 /* **************** Fim Posts ******** */
 
-/* **************** Getters ******** */
+/* **************** Getters ***************************************************************************************** */
 app.get('/', (req, res) => {
     //Get com query randômico
     const sql =
@@ -42,18 +40,22 @@ app.get('/', (req, res) => {
         // console.log(rows);
         const [dados] = rows;
         // const json = JSON.stringify(dados);
-        res.json(dados);
+        res.status(200).json(
+            {
+                erro: false,
+                msg: 'Dados inseridos com sucesso! ',
+            },
+            dados
+        );
     });
-
-    // res.json({ id: fR[0].id_frase, title: fR[0].titulo, frase: fR[0].frase, autor: fR[0].autor });
 });
-/* **************** Fim Getters ******** */
+/* **************** Fim Getters ************************************************************************************* */
 
-/* **************** Puts ******** */
-/* **************** Deletes ******** */
+/* **************** Puts ******************************************************************************************** */
+/* **************** Deletes ***************************************************************************************** */
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
     let data = new Date();
-    console.log('Exemplo app escutando na porta! ' + port);
+    console.log('Exemplo app escutando na porta! ' + process.env.PORT);
     console.log('Servidor node iniciado em : ' + data);
 });
