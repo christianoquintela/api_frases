@@ -12,13 +12,12 @@ const app = express();
 
 /* **************** Usos do express ********************************************************************************* */
 app.use(express.json());
-// app.use(cors());
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
 
 /* **************** Posts ******************************************************************************************* */
 app.post('/cadastro', (req) => {
     const { titulo, frase, autor } = req.body;
+
+    /* Comentado o jeito de fazer o insert dentro do endpoint cadastro */
     // //strings de dados
     // const sql = 'insert into frases(titulo, frase, autor) values (?,?,?)';
     // const values = [titulo, frase, autor];
@@ -37,16 +36,22 @@ app.get('/', (req, res) => {
 
     //Query com o uso de strings
     con.query(sql, (err, rows) => {
+        if (err) {
+            res.status(400).json({
+                erro: err,
+                msg: 'Erro ao tentar acessar dados no DB.',
+            });
+        }
         // console.log(rows);
         const [dados] = rows;
         // const json = JSON.stringify(dados);
-        res.status(200).json(
-            {
-                erro: false,
-                msg: 'Dados inseridos com sucesso! ',
-            },
-            dados
-        );
+        // console.log(json);
+        // res.json(json);
+        return res.status(200).json({
+            erro: false,
+            msg: 'Bem vindo a rota /',
+            dados,
+        });
     });
 });
 /* **************** Fim Getters ************************************************************************************* */
